@@ -6,133 +6,211 @@
 <meta name="theme-color" content="#394c41">
 <title>Oiru Bio</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap">
 <style>
+  @font-face{font-family:'Sora';src:url('sora-regular.ttf') format('truetype');font-weight:400;font-display:swap;}
+  @font-face{font-family:'Sora';src:url('sora-semibold.ttf') format('truetype');font-weight:600;font-display:swap;}
+  @font-face{font-family:'Sora';src:url('sora-bold.ttf') format('truetype');font-weight:700;font-display:swap;}
   :root{
     --verde:#394c41; --lima:#b5c941; --laranja:#e38e3f; --amarelo:#fdea00;
-    --branco:#ffffff; --cinza:#f4f4ef; --texto:#2b2b2b; --muted:#6b6b63;
+    --branco:#ffffff; --cinza:#f3f4ef; --texto:#26302a; --muted:#7a827d; --linha:#e6e8e2;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-  body{font-family:'Sora',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--cinza);color:var(--texto);min-height:100vh;padding-bottom:100px;}
-  header{background:var(--verde);color:var(--branco);padding:18px 16px 14px;}
-  header .logo{display:flex;align-items:center;gap:10px;}
-  header .logo .bola{width:34px;height:34px;border-radius:50%;background:var(--lima);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--verde);font-size:16px;}
-  header h1{font-size:19px;font-weight:700;letter-spacing:.2px;}
-  header p{font-size:12px;color:var(--lima);margin-top:2px;font-weight:600;}
-  main{padding:16px;}
-  .card{background:var(--branco);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
-  .card h2{font-size:15px;font-weight:700;color:var(--verde);margin-bottom:12px;}
-  label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:12px 0 4px;}
-  input,select{width:100%;padding:12px 12px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;background:#fafafa;}
+  body{font-family:'Sora',-apple-system,sans-serif;background:var(--cinza);color:var(--texto);min-height:100vh;padding-bottom:96px;}
+  header{background:var(--verde);padding:16px 16px 14px;position:sticky;top:0;z-index:5;}
+  header img{height:38px;width:auto;display:block;}
+  main{padding:14px 14px 20px;}
+  .card{background:var(--branco);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,.05);}
+  .card h2{font-size:14px;font-weight:700;color:var(--verde);margin-bottom:4px;display:flex;align-items:center;gap:7px;}
+  .card .sub{font-size:11px;color:var(--muted);margin-bottom:12px;}
+  label{display:block;font-size:11.5px;font-weight:600;color:var(--muted);margin:12px 0 4px;}
+  input,select{width:100%;padding:12px 12px;border:1.5px solid var(--linha);border-radius:11px;font-size:15px;font-family:inherit;background:#fafafa;color:var(--texto);}
   input:focus,select:focus{outline:none;border-color:var(--lima);background:#fff;}
   .row{display:flex;gap:10px;}
   .row>div{flex:1;}
-  .btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center;}
-  .btn-primary{background:var(--laranja);color:#fff;}
-  .btn-lima{background:var(--lima);color:var(--verde);}
-  .btn-outline{background:transparent;border:2px solid var(--verde);color:var(--verde);}
+  .btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center;transition:opacity .15s;}
   .btn:active{opacity:.85;}
   .btn[disabled]{opacity:.5;pointer-events:none;}
-  .gps-line{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:var(--verde);font-weight:600;}
-  .gps-dot{width:9px;height:9px;border-radius:50%;background:var(--muted);display:inline-block;}
-  .gps-dot.ok{background:var(--lima);}
-  nav{position:fixed;bottom:0;left:0;right:0;background:var(--branco);display:flex;border-top:1px solid #e5e5df;z-index:10;}
-  nav button{flex:1;padding:12px 4px;background:none;border:none;font-family:inherit;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;}
-  nav button .ico{font-size:20px;}
+  .btn-laranja{background:var(--laranja);color:#fff;}
+  .btn-lima{background:var(--lima);color:var(--verde);}
+  .btn-outline{background:transparent;border:2px solid var(--verde);color:var(--verde);}
+  .btn-foto{background:#eef1e9;border:1.5px dashed var(--lima);color:var(--verde);font-weight:600;display:flex;flex-direction:column;align-items:center;gap:6px;padding:22px;}
+  .btn-foto .ico{font-size:26px;}
+  .foto-preview{margin-top:8px;border-radius:12px;overflow:hidden;display:none;}
+  .foto-preview img{width:100%;height:auto;display:block;}
+  .foto-preview.on{display:block;}
+  nav{position:fixed;bottom:0;left:0;right:0;background:var(--branco);display:flex;border-top:1px solid var(--linha);z-index:10;padding-bottom:env(safe-area-inset-bottom);}
+  nav button{flex:1;padding:10px 2px 8px;background:none;border:none;font-family:inherit;font-size:10.5px;font-weight:600;color:var(--muted);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
+  nav button .ico{font-size:19px;}
   nav button.on{color:var(--verde);}
   nav button.on .ico{color:var(--laranja);}
-  .lista-item{background:var(--branco);border-radius:12px;padding:13px;margin-bottom:10px;border-left:4px solid var(--lima);}
-  .lista-item .t{font-weight:700;font-size:14px;color:var(--verde);}
-  .lista-item .s{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5;}
-  .lista-item .tag{display:inline-block;background:var(--amarelo);color:var(--verde);font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;margin-top:6px;}
-  .empty{text-align:center;color:var(--muted);padding:40px 16px;font-size:14px;}
-  .empty .ico{font-size:42px;display:block;margin-bottom:8px;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .topbar h2{font-size:16px;font-weight:700;color:var(--verde);}
+  .topbar .add{background:var(--laranja);color:#fff;border:none;border-radius:22px;padding:9px 14px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;}
+  .item{background:var(--branco);border-radius:13px;padding:13px;margin-bottom:10px;border-left:4px solid var(--lima);}
+  .item .t{font-weight:700;font-size:14px;color:var(--verde);display:flex;align-items:center;gap:6px;}
+  .item .t .pid{font-size:11px;color:var(--muted);font-weight:600;}
+  .item .s{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.6;}
+  .item .thumb{width:44px;height:44px;border-radius:9px;object-fit:cover;float:right;margin-left:8px;}
+  .empty{text-align:center;color:var(--muted);padding:36px 16px;font-size:13.5px;line-height:1.6;}
+  .empty .ico{font-size:40px;display:block;margin-bottom:8px;}
   .hidden{display:none !important;}
-  .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--verde);color:#fff;padding:11px 18px;border-radius:30px;font-size:13px;font-weight:600;z-index:20;box-shadow:0 4px 12px rgba(0,0,0,.2);opacity:0;transition:opacity .3s;}
+  .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--verde);color:#fff;padding:11px 18px;border-radius:30px;font-size:13px;font-weight:600;z-index:30;box-shadow:0 4px 12px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;max-width:90%;text-align:center;}
   .toast.show{opacity:1;}
   .stat{display:flex;gap:10px;margin-bottom:14px;}
-  .stat .box{flex:1;background:var(--verde);border-radius:12px;padding:14px;color:#fff;text-align:center;}
-  .stat .box .n{font-size:24px;font-weight:700;color:var(--amarelo);}
+  .stat .box{flex:1;background:var(--verde);border-radius:13px;padding:13px;color:#fff;text-align:center;}
+  .stat .box .n{font-size:22px;font-weight:700;color:var(--amarelo);}
   .stat .box .l{font-size:10px;font-weight:600;color:var(--lima);margin-top:2px;}
+  .secao{margin:18px 0 2px;font-size:11px;font-weight:700;color:var(--laranja);text-transform:uppercase;letter-spacing:.6px;}
 </style>
 </head>
 <body>
-<header>
-  <div class="logo">
-    <div class="bola">O</div>
-    <div><h1>Oiru Bio</h1><p>Rastreabilidade de copaíba</p></div>
-  </div>
-</header>
+<header><img src="logo-branco.png" alt="Oiru Bio"></header>
 
 <main>
-  <!-- VISÃO: LISTA -->
-  <section id="view-lista">
+  <!-- ÁRVORES -->
+  <section id="view-arvores">
     <div class="stat">
       <div class="box"><div class="n" id="n-arvores">0</div><div class="l">ÁRVORES</div></div>
+      <div class="box"><div class="n" id="n-prod">0</div><div class="l">PRODUTORES</div></div>
       <div class="box"><div class="n" id="n-ext">0</div><div class="l">EXTRAÇÕES</div></div>
     </div>
-    <div class="card">
-      <h2>Copaibeiras cadastradas</h2>
-      <div id="lista"></div>
-    </div>
+    <div class="topbar"><h2>Árvores cadastradas</h2><button class="add" id="btn-add-arvore">+ Nova</button></div>
+    <div id="lista-arvores"></div>
   </section>
 
-  <!-- VISÃO: NOVA ÁRVORE -->
-  <section id="view-nova" class="hidden">
+  <!-- NOVA ÁRVORE -->
+  <section id="view-nova-arvore" class="hidden">
+    <div class="topbar"><h2>Nova árvore</h2><button class="add" id="btn-voltar-arv">← Voltar</button></div>
+
     <div class="card">
-      <h2>🌳 Cadastrar copaibeira</h2>
-      <label>Nome popular *</label>
-      <input id="f-nome" placeholder="Ex: Copaíba">
+      <h2>📷 Foto da árvore</h2>
+      <div class="sub">Abra a câmera e registre a copaibeira</div>
+      <button class="btn btn-foto" id="btn-foto-arv"><span class="ico">📸</span>Tirar foto / escolher</button>
+      <input type="file" id="foto-arv-input" accept="image/*" capture="environment" class="hidden">
+      <div class="foto-preview" id="foto-arv-preview"><img id="foto-arv-img"></div>
+    </div>
+
+    <div class="card">
+      <h2>🌳 Identificação</h2>
+      <label>Produtor (quem é dono da árvore) *</label>
+      <select id="f-produtor"><option value="">Selecione…</option></select>
+      <label>Nº da plaqueta</label>
+      <input id="f-id" placeholder="Gerado automaticamente" disabled>
+      <label>Nome da árvore (popular) *</label>
+      <input id="f-nome" placeholder="Ex: Copaíba-marimari">
       <label>Nome científico (opcional)</label>
-      <input id="f-cientifico" placeholder="Ex: Copaifera langsdorffii">
-      <label>CPF do produtor *</label>
-      <input id="f-cpf" inputmode="numeric" placeholder="000.000.000-00">
-      <label>CNPJ (cooperativa/empresa)</label>
-      <input id="f-cnpj" inputmode="numeric" placeholder="00.000.000/0001-00">
+      <input id="f-cientifico" placeholder="Ex: Copaifera reticulata">
+    </div>
+
+    <div class="card">
+      <h2>📍 Localização</h2>
+      <div class="sub">Use o GPS do aparelho para fixar a posição exata</div>
       <div class="row">
-        <div><label>Latitude</label><input id="f-lat" inputmode="decimal" placeholder="-11.0000"></div>
-        <div><label>Longitude</label><input id="f-lon" inputmode="decimal" placeholder="-62.0000"></div>
+        <div><label>Latitude</label><input id="f-lat" inputmode="decimal" placeholder="-11.000000"></div>
+        <div><label>Longitude</label><input id="f-lon" inputmode="decimal" placeholder="-62.000000"></div>
       </div>
-      <button class="btn btn-lima" id="btn-gps" style="margin-top:14px;">📍 Usar minha localização (GPS)</button>
-      <div class="gps-line" id="gps-status"><span class="gps-dot" id="gps-dot"></span><span id="gps-txt">GPS ainda não usado</span></div>
-      <button class="btn btn-primary" id="btn-salvar" style="margin-top:14px;">Salvar árvore</button>
+      <button class="btn btn-lima" id="btn-gps" style="margin-top:12px;">📍 Usar minha localização (GPS)</button>
+      <div class="gps-line" style="display:flex;align-items:center;gap:8px;margin-top:9px;font-size:12.5px;color:var(--verde);font-weight:600;"><span id="gps-dot" style="width:9px;height:9px;border-radius:50%;background:var(--muted);display:inline-block;"></span><span id="gps-txt">GPS ainda não usado</span></div>
+    </div>
+
+    <div class="card">
+      <h2>📏 Medidas</h2>
+      <div class="row">
+        <div><label>DAP (cm)</label><input id="f-dap" inputmode="decimal" placeholder="Ø tronco"></div>
+        <div><label>Circunferência (cm)</label><input id="f-circ" inputmode="decimal" placeholder="perímetro"></div>
+        <div><label>Altura (m)</label><input id="f-altura" inputmode="decimal" placeholder="estimada"></div>
+      </div>
+      <label>Estado fitossanitário</label>
+      <select id="f-saude">
+        <option value="">Selecione…</option>
+        <option>Saudável</option>
+        <option>Atacada por fungo</option>
+        <option>Atacada por inseto</option>
+        <option>Seca / estressada</option>
+        <option>Com dano no tronco</option>
+        <option>Outra</option>
+      </select>
+      <label>Leitura do sensor (ohm)</label>
+      <input id="f-ohm" inputmode="decimal" placeholder="Ex: 253000 (ou 'erro')">
+    </div>
+
+    <div class="card">
+      <h2>📝 Observações</h2>
+      <input id="f-obs" placeholder="Qualquer detalhe que ajude a equipe…">
+      <button class="btn btn-laranja" id="btn-salvar-arv" style="margin-top:14px;">Salvar árvore</button>
     </div>
   </section>
 
-  <!-- VISÃO: EXTRAÇÃO -->
-  <section id="view-ext" class="hidden">
+  <!-- PRODUTORES -->
+  <section id="view-produtores" class="hidden">
+    <div class="topbar"><h2>Produtores</h2><button class="add" id="btn-add-prod">+ Novo</button></div>
+    <div id="lista-produtores"></div>
+  </section>
+
+  <!-- NOVO PRODUTOR -->
+  <section id="view-novo-produtor" class="hidden">
+    <div class="topbar"><h2>Novo produtor</h2><button class="add" id="btn-voltar-prod">← Voltar</button></div>
     <div class="card">
-      <h2>🛢️ Registrar extração</h2>
+      <h2>👤 Dados do produtor</h2>
+      <label>Nome completo *</label>
+      <input id="p-nome" placeholder="Nome do extrativista">
+      <label>CPF *</label>
+      <input id="p-cpf" inputmode="numeric" placeholder="000.000.000-00">
+      <label>CNPJ (cooperativa/empresa)</label>
+      <input id="p-cnpj" inputmode="numeric" placeholder="00.000.000/0001-00">
+      <label>Comunidade / aldeia</label>
+      <input id="p-comunidade" placeholder="Ex: Rio Preto, Ji-Paraná">
+      <label>Endereço</label>
+      <input id="p-endereco" placeholder="Comunidade, município, UF">
+      <label>Telefone / WhatsApp</label>
+      <input id="p-telefone" inputmode="tel" placeholder="(69) 9 9999-9999">
+      <button class="btn btn-laranja" id="btn-salvar-prod" style="margin-top:14px;">Salvar produtor</button>
+    </div>
+  </section>
+
+  <!-- EXTRAÇÃO -->
+  <section id="view-extracao" class="hidden">
+    <div class="topbar"><h2>Registrar extração</h2></div>
+    <div class="card">
+      <h2>🛢️ Extração de óleo</h2>
       <label>Árvore *</label>
-      <select id="ext-arvore"></select>
+      <select id="ext-arvore"><option value="">Selecione…</option></select>
       <label>Data *</label>
       <input id="ext-data" type="date">
+      <label>Leitura do sensor (ohm)</label>
+      <input id="ext-ohm" inputmode="decimal" placeholder="Leitura antes/depois da extração">
       <label>Volume (litros)</label>
       <input id="ext-volume" inputmode="decimal" placeholder="Ex: 2,5">
       <label>Lote *</label>
       <input id="ext-lote" placeholder="Nº do lote">
+      <label>Foto da extração</label>
+      <button class="btn btn-foto" id="btn-foto-ext"><span class="ico">📸</span>Tirar foto / escolher</button>
+      <input type="file" id="foto-ext-input" accept="image/*" capture="environment" class="hidden">
+      <div class="foto-preview" id="foto-ext-preview"><img id="foto-ext-img"></div>
       <label>Observação</label>
-      <input id="ext-obs" placeholder="Lote, condição da árvore...">
-      <button class="btn btn-primary" id="btn-salvar-ext" style="margin-top:14px;">Registrar extração</button>
+      <input id="ext-obs" placeholder="Condição da árvore, cor do óleo…">
+      <button class="btn btn-laranja" id="btn-salvar-ext" style="margin-top:14px;">Registrar extração</button>
     </div>
   </section>
 
-  <!-- VISÃO: EXPORTAR -->
-  <section id="view-export" class="hidden">
+  <!-- EXPORTAR -->
+  <section id="view-exportar" class="hidden">
     <div class="card">
       <h2>📤 Exportar dados</h2>
-      <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;">Seus dados ficam salvos neste aparelho (funciona sem internet). Exporte quando quiser enviar para o banco central.</p>
-      <button class="btn btn-lima" id="btn-csv" style="margin-bottom:10px;">Baixar CSV (árvores)</button>
+      <div class="sub">Os dados ficam salvos neste aparelho (funciona offline). Exporte para enviar ao banco central.</div>
+      <button class="btn btn-lima" id="btn-csv-arv" style="margin-bottom:10px;">Baixar CSV (árvores)</button>
+      <button class="btn btn-lima" id="btn-csv-prod" style="margin-bottom:10px;">Baixar CSV (produtores)</button>
+      <button class="btn btn-lima" id="btn-csv-ext" style="margin-bottom:10px;">Baixar CSV (extrações)</button>
       <button class="btn btn-outline" id="btn-json">Baixar JSON (tudo)</button>
     </div>
   </section>
 </main>
 
 <nav>
-  <button data-v="lista" class="on"><span class="ico">🌳</span>Árvores</button>
-  <button data-v="nova"><span class="ico">➕</span>Nova</button>
-  <button data-v="ext"><span class="ico">🛢️</span>Extração</button>
-  <button data-v="export"><span class="ico">📤</span>Exportar</button>
+  <button data-v="arvores" class="on"><span class="ico">🌳</span>Árvores</button>
+  <button data-v="produtores"><span class="ico">👤</span>Produtores</button>
+  <button data-v="extracao"><span class="ico">🛢️</span>Extração</button>
+  <button data-v="exportar"><span class="ico">📤</span>Exportar</button>
 </nav>
 
 <div class="toast" id="toast"></div>
