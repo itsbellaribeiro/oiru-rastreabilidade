@@ -1,5 +1,5 @@
-// Oiru Bio — service worker (funcionamento offline)
-const CACHE = 'oiru-v2';
+// Oiru Bio — service worker (offline + sempre busca versão nova)
+const CACHE = 'oiru-v3';
 const ASSETS = [
   './', './index.html', './app.js', './manifest.json',
   './logo-branco.png', './logo-verde.png',
@@ -19,11 +19,26 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if(e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+
+  // HTML e JS: NETWORK-FIRST — sempre pega a versão nova quando online
+  if(e.request.mode === 'navigate' || url.pathname.endsWith('.js') || url.pathname.endsWith('.json')) {
+    e.respondWith(
+      fetch(e.request).then(res => {
+        const clone = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+        return res;
+      }).catch(() => caches.match(e.request).then(r => r || caches.match('./index.html')))
+    );
+    return;
+  }
+
+  // assets estáticos (fonte, logo, ícones): cache-first
   e.respondWith(
     caches.match(e.request).then(r => r || fetch(e.request).then(res => {
       const clone = res.clone();
       caches.open(CACHE).then(c => c.put(e.request, clone));
       return res;
-    }).catch(() => caches.match('./index.html')))
+    }))
   );
 });
