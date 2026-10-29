@@ -88,8 +88,10 @@ document.getElementById('btn-gps').addEventListener('click', () => {
 
 // ============ PRODUTORES ============
 let produtorAtual = { foto:null };
+ligarFoto('btn-foto-prod', 'foto-prod-input', 'foto-prod-preview', 'foto-prod-img', produtorAtual);
 function resetFormProdutor(){
   ['p-nome','p-cpf','p-cnpj','p-comunidade','p-endereco','p-telefone'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('foto-prod-preview').classList.remove('on');
   produtorAtual = { foto:null };
 }
 document.getElementById('btn-salvar-prod').addEventListener('click', () => {
@@ -100,6 +102,7 @@ document.getElementById('btn-salvar-prod').addEventListener('click', () => {
   const prod = {
     id: novoId('P', DB.produtores),
     nome, cpf,
+    foto: produtorAtual.foto,
     cnpj: document.getElementById('p-cnpj').value.trim(),
     comunidade: document.getElementById('p-comunidade').value.trim(),
     endereco: document.getElementById('p-endereco').value.trim(),
@@ -118,13 +121,14 @@ function renderProdutores(){
   document.getElementById('n-prod').textContent = lista.length;
   const el = document.getElementById('lista-produtores');
   if(!lista.length){
-    el.innerHTML = '<div class="empty"><span class="ico">👤</span>Nenhum produtor ainda.<br>Cadastre antes de registrar as árvores.</div>';
+    el.innerHTML = '<div class="empty"><img src="icon-comunidade.svg" style="width:40px;height:40px;margin-bottom:8px;">Cadastre o produtor primeiro —<br>é quem cuida da árvore.</div>';
     return;
   }
-  el.innerHTML = lista.slice().reverse().map(p =>
-    `<div class="item"><div class="t">${p.nome} <span class="pid">· ${p.id}</span></div>
-     <div class="s">CPF: ${p.cpf}${p.cnpj ? '<br>CNPJ: '+p.cnpj : ''}${p.comunidade ? '<br>📍 '+p.comunidade : ''}${p.telefone ? '<br>📞 '+p.telefone : ''}</div></div>`
-  ).join('');
+  el.innerHTML = lista.slice().reverse().map(p => {
+    const av = p.foto ? `<img class="thumb" style="border-radius:50%;" src="${p.foto}">` : '';
+    return `<div class="item">${av}<div class="t">${p.nome} <span class="pid">· ${p.id}</span></div>
+     <div class="s">CPF: ${p.cpf}${p.cnpj ? '<br>CNPJ: '+p.cnpj : ''}${p.comunidade ? '<br>Comunidade: '+p.comunidade : ''}${p.telefone ? '<br>Telefone: '+p.telefone : ''}</div></div>`;
+  }).join('');
 }
 function renderSelectProdutores(){
   const lista = ler(DB.produtores);
@@ -190,7 +194,7 @@ function renderArvores(){
   document.getElementById('n-ext').textContent = ext.length;
   const el = document.getElementById('lista-arvores');
   if(!arv.length){
-    el.innerHTML = '<div class="empty"><span class="ico">🌱</span>Nenhuma copaibeira ainda.<br>Toque em "+ Nova" para registrar.</div>';
+    el.innerHTML = '<div class="empty"><img src="icon-arvore.svg" style="width:40px;height:40px;margin-bottom:8px;">Ainda não temos copaibeiras por aqui.<br>Vamos registrar a primeira?</div>';
     return;
   }
   el.innerHTML = arv.slice().reverse().map(a => {
@@ -198,7 +202,7 @@ function renderArvores(){
     const foto = a.foto ? `<img class="thumb" src="${a.foto}">` : '';
     return `<div class="item">${foto}
       <div class="t">${a.nome} <span class="pid">· ${a.id}</span></div>
-      <div class="s">👤 ${nomeProdutor(a.produtorId)}<br>📍 ${a.lat}, ${a.lon}${a.ohm ? '<br>🔬 '+a.ohm+' ohm' : ''}${a.saude ? '<br>🌿 '+a.saude : ''}</div>
+      <div class="s">Produtor: ${nomeProdutor(a.produtorId)}<br>Local: ${a.lat}, ${a.lon}${a.ohm ? '<br>Leitura: '+a.ohm+' ohm' : ''}${a.saude ? '<br>Saúde: '+a.saude : ''}</div>
       <div class="s" style="color:var(--laranja);font-weight:600;margin-top:5px;">${nExt} extração(ões)</div>
     </div>`;
   }).join('');

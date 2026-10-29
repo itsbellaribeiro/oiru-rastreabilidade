@@ -16,7 +16,7 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   body{font-family:'Sora',-apple-system,sans-serif;background:var(--cinza);color:var(--texto);min-height:100vh;padding-bottom:96px;}
-  header{background:var(--verde);padding:16px 16px 14px;position:sticky;top:0;z-index:5;}
+  header{background:var(--amarelo);padding:16px 16px 14px;position:sticky;top:0;z-index:5;}
   header img{height:38px;width:auto;display:block;}
   main{padding:14px 14px 20px;}
   .card{background:var(--branco);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,.05);}
@@ -56,6 +56,10 @@
   .hidden{display:none !important;}
   .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--verde);color:#fff;padding:11px 18px;border-radius:30px;font-size:13px;font-weight:600;z-index:30;box-shadow:0 4px 12px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;max-width:90%;text-align:center;}
   .toast.show{opacity:1;}
+  nav button .ico{width:22px;height:22px;}
+  .card h2 img{width:17px;height:17px;vertical-align:-3px;}
+  .btn-foto img{width:22px;height:22px;vertical-align:-3px;}
+  .bi{width:18px;height:18px;vertical-align:-3px;margin-right:4px;}
   .stat{display:flex;gap:10px;margin-bottom:14px;}
   .stat .box{flex:1;background:var(--verde);border-radius:13px;padding:13px;color:#fff;text-align:center;}
   .stat .box .n{font-size:22px;font-weight:700;color:var(--amarelo);}
@@ -64,7 +68,7 @@
 </style>
 </head>
 <body>
-<header><img src="logo-branco.png" alt="Oiru Bio"></header>
+<header><img src="logo-verde.png" alt="Oiru Bio"></header>
 
 <main>
   <!-- ÁRVORES -->
@@ -83,15 +87,15 @@
     <div class="topbar"><h2>Nova árvore</h2><button class="add" id="btn-voltar-arv">← Voltar</button></div>
 
     <div class="card">
-      <h2>📷 Foto da árvore</h2>
+      <h2><img src="icon-registro.svg">Foto da árvore</h2>
       <div class="sub">Abra a câmera e registre a copaibeira</div>
-      <button class="btn btn-foto" id="btn-foto-arv"><span class="ico">📸</span>Tirar foto / escolher</button>
+      <button class="btn btn-foto" id="btn-foto-arv"><img src="icon-registro.svg">Tirar foto / escolher</button>
       <input type="file" id="foto-arv-input" accept="image/*" capture="environment" class="hidden">
       <div class="foto-preview" id="foto-arv-preview"><img id="foto-arv-img"></div>
     </div>
 
     <div class="card">
-      <h2>🌳 Identificação</h2>
+      <h2><img src="icon-arvore.svg">Identificação</h2>
       <label>Produtor (quem é dono da árvore) *</label>
       <select id="f-produtor"><option value="">Selecione…</option></select>
       <label>Nº da marcação (plaqueta, abraçadeira, PET…)</label>
@@ -112,18 +116,18 @@
     </div>
 
     <div class="card">
-      <h2>📍 Localização</h2>
+      <h2><img src="icon-rede.svg">Localização</h2>
       <div class="sub">Use o GPS do aparelho para fixar a posição exata</div>
       <div class="row">
         <div><label>Latitude</label><input id="f-lat" inputmode="decimal" placeholder="-11.000000"></div>
         <div><label>Longitude</label><input id="f-lon" inputmode="decimal" placeholder="-62.000000"></div>
       </div>
-      <button class="btn btn-lima" id="btn-gps" style="margin-top:12px;">📍 Usar minha localização (GPS)</button>
+      <button class="btn btn-lima" id="btn-gps" style="margin-top:12px;"><img src="icon-rede.svg" class="bi">Usar minha localização (GPS)</button>
       <div class="gps-line" style="display:flex;align-items:center;gap:8px;margin-top:9px;font-size:12.5px;color:var(--verde);font-weight:600;"><span id="gps-dot" style="width:9px;height:9px;border-radius:50%;background:var(--muted);display:inline-block;"></span><span id="gps-txt">GPS ainda não usado</span></div>
     </div>
 
     <div class="card">
-      <h2>📏 Medidas</h2>
+      <h2><img src="icon-sensor.svg">Medidas</h2>
       <div class="row">
         <div><label>DAP (cm)</label><input id="f-dap" inputmode="decimal" placeholder="Ø tronco"></div>
         <div><label>Circunferência (cm)</label><input id="f-circ" inputmode="decimal" placeholder="perímetro"></div>
@@ -144,7 +148,7 @@
     </div>
 
     <div class="card">
-      <h2>📝 Observações</h2>
+      <h2><img src="icon-registro.svg">Observações</h2>
       <input id="f-obs" placeholder="Qualquer detalhe que ajude a equipe…">
       <button class="btn btn-laranja" id="btn-salvar-arv" style="margin-top:14px;">Salvar árvore</button>
     </div>
@@ -160,7 +164,10 @@
   <section id="view-novo-produtor" class="hidden">
     <div class="topbar"><h2>Novo produtor</h2><button class="add" id="btn-voltar-prod">← Voltar</button></div>
     <div class="card">
-      <h2>👤 Dados do produtor</h2>
+      <h2><img src="icon-comunidade.svg">Dados do produtor</h2>
+      <button class="btn btn-foto" id="btn-foto-prod"><img src="icon-registro.svg">Foto de perfil</button>
+      <input type="file" id="foto-prod-input" accept="image/*" capture="user" class="hidden">
+      <div class="foto-preview" id="foto-prod-preview"><img id="foto-prod-img"></div>
       <label>Nome completo *</label>
       <input id="p-nome" placeholder="Nome do extrativista">
       <label>CPF *</label>
@@ -181,7 +188,7 @@
   <section id="view-extracao" class="hidden">
     <div class="topbar"><h2>Registrar extração</h2></div>
     <div class="card">
-      <h2>🛢️ Extração de óleo</h2>
+      <h2><img src="icon-gota.svg">Extração de óleo</h2>
       <label>Árvore *</label>
       <select id="ext-arvore"><option value="">Selecione…</option></select>
       <label>Data *</label>
@@ -193,7 +200,7 @@
       <label>Lote *</label>
       <input id="ext-lote" placeholder="Nº do lote">
       <label>Foto da extração</label>
-      <button class="btn btn-foto" id="btn-foto-ext"><span class="ico">📸</span>Tirar foto / escolher</button>
+      <button class="btn btn-foto" id="btn-foto-ext"><img src="icon-registro.svg">Tirar foto / escolher</button>
       <input type="file" id="foto-ext-input" accept="image/*" capture="environment" class="hidden">
       <div class="foto-preview" id="foto-ext-preview"><img id="foto-ext-img"></div>
       <label>Observação</label>
@@ -205,7 +212,7 @@
   <!-- EXPORTAR -->
   <section id="view-exportar" class="hidden">
     <div class="card">
-      <h2>📤 Exportar dados</h2>
+      <h2><img src="icon-dados.svg">Exportar dados</h2>
       <div class="sub">Os dados ficam salvos neste aparelho (funciona offline). Exporte para enviar ao banco central.</div>
       <button class="btn btn-lima" id="btn-csv-arv" style="margin-bottom:10px;">Baixar CSV (árvores)</button>
       <button class="btn btn-lima" id="btn-csv-prod" style="margin-bottom:10px;">Baixar CSV (produtores)</button>
@@ -216,10 +223,10 @@
 </main>
 
 <nav>
-  <button data-v="arvores" class="on"><span class="ico">🌳</span>Árvores</button>
-  <button data-v="produtores"><span class="ico">👤</span>Produtores</button>
-  <button data-v="extracao"><span class="ico">🛢️</span>Extração</button>
-  <button data-v="exportar"><span class="ico">📤</span>Exportar</button>
+  <button data-v="arvores" class="on"><img src="icon-arvore.svg" class="ico">Árvores</button>
+  <button data-v="produtores"><img src="icon-comunidade.svg" class="ico">Produtores</button>
+  <button data-v="extracao"><img src="icon-gota.svg" class="ico">Extração</button>
+  <button data-v="exportar"><img src="icon-dados.svg" class="ico">Exportar</button>
 </nav>
 
 <div class="toast" id="toast"></div>
