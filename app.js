@@ -139,7 +139,7 @@ let arvoreAtual = { foto:null };
 ligarFoto('btn-foto-arv', 'foto-arv-input', 'foto-arv-preview', 'foto-arv-img', arvoreAtual);
 
 function resetFormArvore(){
-  ['f-nome','f-cientifico','f-lat','f-lon','f-dap','f-circ','f-altura','f-saude','f-ohm','f-obs'].forEach(id => document.getElementById(id).value='');
+  ['f-nome','f-cientifico','f-lat','f-lon','f-dap','f-circ','f-altura','f-saude','f-ohm','f-marcacao','f-obs'].forEach(id => document.getElementById(id).value='');
   document.getElementById('f-produtor').value = '';
   document.getElementById('f-id').value = novoId('OIRU', DB.arvores);
   document.getElementById('foto-arv-preview').classList.remove('on');
@@ -167,6 +167,7 @@ document.getElementById('btn-salvar-arv').addEventListener('click', () => {
     circ: document.getElementById('f-circ').value.trim(),
     altura: document.getElementById('f-altura').value.trim(),
     saude: document.getElementById('f-saude').value,
+    marcacao: document.getElementById('f-marcacao').value,
     ohm: document.getElementById('f-ohm').value.trim(),
     obs: document.getElementById('f-obs').value.trim(),
     criado: new Date().toISOString()
@@ -262,8 +263,8 @@ function toCSV(linhas){
 document.getElementById('btn-csv-arv').addEventListener('click', () => {
   const arv = ler(DB.arvores);
   if(!arv.length){ toast('Sem árvores para exportar'); return; }
-  const L = [['plaqueta','nome','cientifico','produtor_id','produtor','cpf','lat','lon','dap','circ','altura','saude','ohm','obs','criado']];
-  arv.forEach(a => { const p = ler(DB.produtores).find(x=>x.id===a.produtorId)||{}; L.push([a.id,a.nome,a.cientifico,a.produtorId,p.nome,p.cpf,a.lat,a.lon,a.dap,a.circ,a.altura,a.saude,a.ohm,a.obs,a.criado]); });
+  const L = [['plaqueta','nome','cientifico','produtor_id','produtor','cpf','lat','lon','dap','circ','altura','saude','marcacao','ohm','obs','criado']];
+  arv.forEach(a => { const p = ler(DB.produtores).find(x=>x.id===a.produtorId)||{}; L.push([a.id,a.nome,a.cientifico,a.produtorId,p.nome,p.cpf,a.lat,a.lon,a.dap,a.circ,a.altura,a.saude,a.marcacao,a.ohm,a.obs,a.criado]); });
   baixar('oiru_arvores.csv', toCSV(L), 'text/csv'); toast('CSV de árvores ✓');
 });
 document.getElementById('btn-csv-prod').addEventListener('click', () => {
