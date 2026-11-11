@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <style>.cls-1{fill:#37493b;}.cls-2{fill:#ffffff;}</style>
+  <path class="cls-1" d="M250,55C156,55,80,131,80,225c0,127,170,220,170,220s170-93,170-220C420,131,344,55,250,55z"/>
+  <circle class="cls-2" cx="250" cy="225" r="64"/>
+  <circle class="cls-1" cx="250" cy="225" r="32"/>
+</svg>

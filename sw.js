@@ -1,9 +1,11 @@
 // Oiru Bio — service worker (offline + sempre busca versão nova)
-const CACHE = 'oiru-v3';
+const CACHE = 'oiru-v4';
 const ASSETS = [
   './', './index.html', './app.js', './manifest.json',
   './logo-branco.png', './logo-verde.png',
   './icon-192.png', './icon-512.png',
+  './icon-arvore.svg', './icon-comunidade.svg', './icon-dados.svg',
+  './icon-gota.svg', './icon-mapa.svg', './icon-rede.svg', './icon-registro.svg', './icon-sensor.svg',
   './sora-regular.ttf', './sora-semibold.ttf', './sora-bold.ttf'
 ];
 

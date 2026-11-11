@@ -20,6 +20,7 @@ function trocarView(v){
   if(v === 'extracao') renderSelectArvores();
   if(v === 'nova-arvore') renderSelectProdutores();
   if(v === 'exportar') renderStat();
+  if(v === 'mapa') initMapa();
 }
 navBtns.forEach(b => b.addEventListener('click', () => trocarView(b.dataset.v)));
 
@@ -289,6 +290,52 @@ document.getElementById('btn-json').addEventListener('click', () => {
   const tudo = { produtores: ler(DB.produtores), arvores: ler(DB.arvores), extracoes: ler(DB.extracoes), exportado: new Date().toISOString() };
   baixar('oiru_dados.json', JSON.stringify(tudo, null, 2), 'application/json'); toast('JSON baixado ✓');
 });
+
+// ============ MAPA ============
+let mapa = null;
+let markersLayer = null;
+
+function initMapa(){
+  const el = document.getElementById('mapa');
+  if(typeof L === 'undefined'){
+    el.innerHTML = '<div class="empty" style="height:520px;display:flex;align-items:center;justify-content:center;flex-direction:column;"><img src="icon-mapa.svg" style="width:40px;height:40px;margin-bottom:8px;">O mapa precisa de conexão<br>com a internet para carregar.</div>';
+    return;
+  }
+  if(mapa){ mapa.invalidateSize(); atualizarPins(); return; }
+  mapa = L.map('mapa');
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+  }).addTo(mapa);
+  markersLayer = L.layerGroup().addTo(mapa);
+  atualizarPins();
+}
+
+function atualizarPins(){
+  if(!mapa || !markersLayer) return;
+  markersLayer.clearLayers();
+  const arv = ler(DB.arvores).filter(a => {
+    const la = parseFloat(a.lat), lo = parseFloat(a.lon);
+    return !isNaN(la) && !isNaN(lo);
+  });
+  if(!arv.length){
+    mapa.setView([-10.9, -62.5], 6); // Rondônia (centro padrão)
+    return;
+  }
+  const pontos = [];
+  arv.forEach(a => {
+    const la = parseFloat(a.lat), lo = parseFloat(a.lon);
+    pontos.push([la, lo]);
+    const p = ler(DB.produtores).find(x => x.id === a.produtorId) || {};
+    L.marker([la, lo]).addTo(markersLayer)
+      .bindPopup('<b>' + a.nome + '</b> · ' + a.id +
+        '<br>Produtor: ' + (p.nome || '—') +
+        (a.ohm ? '<br>Leitura: ' + a.ohm + ' ohm' : '') +
+        (a.saude ? '<br>Saúde: ' + a.saude : ''));
+  });
+  if(pontos.length === 1){ mapa.setView(pontos[0], 15); }
+  else { mapa.fitBounds(pontos, { padding: [40, 40] }); }
+}
 
 // ---------- service worker ----------
 if('serviceWorker' in navigator){

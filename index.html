@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#394c41">
 <title>Oiru Bio</title>
 <link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <style>
   @font-face{font-family:'Sora';src:url('sora-regular.ttf') format('truetype');font-weight:400;font-display:swap;}
   @font-face{font-family:'Sora';src:url('sora-semibold.ttf') format('truetype');font-weight:600;font-display:swap;}
@@ -220,10 +221,20 @@
       <button class="btn btn-outline" id="btn-json">Baixar JSON (tudo)</button>
     </div>
   </section>
+
+  <!-- MAPA -->
+  <section id="view-mapa" class="hidden">
+    <div class="topbar"><h2>Mapa das árvores</h2></div>
+    <div class="card" style="padding:6px;">
+      <div id="mapa" style="height:520px;border-radius:12px;background:#e8ece5;"></div>
+    </div>
+    <div class="sub" style="text-align:center;margin-top:8px;font-size:12px;">Cada marcador é uma copaibeira cadastrada. Toque no pino para ver os detalhes.</div>
+  </section>
 </main>
 
 <nav>
   <button data-v="arvores" class="on"><img src="icon-arvore.svg" class="ico">Árvores</button>
+  <button data-v="mapa"><img src="icon-mapa.svg" class="ico">Mapa</button>
   <button data-v="produtores"><img src="icon-comunidade.svg" class="ico">Produtores</button>
   <button data-v="extracao"><img src="icon-gota.svg" class="ico">Extração</button>
   <button data-v="exportar"><img src="icon-dados.svg" class="ico">Exportar</button>
@@ -231,6 +242,7 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="app.js"></script>
 </body>
 </html>
